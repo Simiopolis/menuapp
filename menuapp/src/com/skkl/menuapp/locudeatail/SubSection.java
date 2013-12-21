@@ -4,9 +4,17 @@ import java.util.List;
 
 public class SubSection {
 
-	private String subsection_name;
+	private String subsection_name, section_name;
 	private List<Content> contents;
 	
+	public String getSection_name() {
+		return section_name;
+	}
+
+	public void setSection_name(String section_name) {
+		this.section_name = section_name;
+	}
+
 	public String getSubsection_name() {
 		return subsection_name;
 	}
