@@ -1,6 +1,7 @@
 package com.skkl.menuapp;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +30,8 @@ public class MainActivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int pos,
 					long id) {
-				//TODO: when clicked display menu of a biz			
+				//TODO: when clicked display menu of a biz
+				startMenuActivity();
 			}
 		});
     }
@@ -40,11 +42,16 @@ public class MainActivity extends Activity {
 //        getMenuInflater().inflate(R.menu.main, menu);
 //        return true;
 //    }
+    
+    private void startMenuActivity() {
+    	Intent i = new Intent(this, MenuActivity.class);
+    	startActivity(i);
+    }
     public class ItemAdapter extends BaseAdapter {
         
         private class ViewHolder {
             public TextView businessName;
-            public TextView descr;
+//            public TextView descr;
         }
 
         @Override
