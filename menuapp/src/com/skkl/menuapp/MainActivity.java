@@ -37,7 +37,8 @@ public class MainActivity extends Activity {
 	private Context context;
 	private LocuResult result;
 	private List<String> names;
-	protected double lat, lng;
+	private List<String> ids;
+	protected double lat, lng, currentTime;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +47,7 @@ public class MainActivity extends Activity {
         
         context = this;
         names = new ArrayList<String>();
+        ids = new ArrayList<String>();
         getLocation();
         listview = (ListView)findViewById(R.id.listview);
         ((ListView)listview).setAdapter(new ItemAdapter());
@@ -55,14 +57,20 @@ public class MainActivity extends Activity {
 			public void onItemClick(AdapterView<?> parent, View view, int pos,
 					long id) {
 				//TODO: when clicked display menu of a biz
-				startMenuActivity();
+				startMenuActivity(pos);
 			}
 		});
+        locuSearch();
+        currentTime = System.currentTimeMillis();
     }
     
 	@Override
 	protected void onStart() {
 		super.onStart();
+//		double time = System.currentTimeMillis();
+//		if(time - currentTime >= 300000) {
+//			locuSearch();
+//		}
 		locuSearch();
 	}
 
@@ -70,6 +78,7 @@ public class MainActivity extends Activity {
 	protected void onResume() {
 		super.onResume();
 		names.clear();
+		ids.clear();
 	}
 
 	private void locuSearch() {
@@ -86,6 +95,7 @@ public class MainActivity extends Activity {
 					List<Business> businesses = result.getObjects();					
 					for(Business b: businesses) {
 						names.add(b.getName());
+						ids.add(b.getId());
 					}
 					listview.invalidateViews();
 				} catch (InterruptedException e) {
@@ -109,10 +119,13 @@ public class MainActivity extends Activity {
     	lng = myLocation.getLongitude();
     }
     
-    private void startMenuActivity() {
+    private void startMenuActivity(int pos) {
     	Intent i = new Intent(this, MenuActivity.class);
+    	i.putExtra("id", ids.get(pos));
+    	i.putExtra("name", names.get(pos));
     	startActivity(i);
     }
+    
     public class ItemAdapter extends BaseAdapter {
         
         private class ViewHolder {
