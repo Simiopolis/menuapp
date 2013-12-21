@@ -39,10 +39,6 @@ public class MainActivity extends Activity {
 	private List<String> names;
 	protected double lat, lng;
 	
-	//Testing purpose
-	//String[] biz = new String[]{"Sushi Nichii", "Barchi Sushi", "Latitude"};
-	
-	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,7 +117,6 @@ public class MainActivity extends Activity {
         
         private class ViewHolder {
             public TextView businessName;
-//            public TextView descr;
         }
 
         @Override
@@ -147,14 +142,12 @@ public class MainActivity extends Activity {
                 view = getLayoutInflater().inflate(R.layout.business, parent, false);
                 holder = new ViewHolder();
                 holder.businessName = (TextView)view.findViewById(R.id.businessName);
-                //holder.descr = (TextView)view.findViewById(R.id.happyHourDesc);
                 view.setTag(holder);
             } else {
                 holder = (ViewHolder)view.getTag();
             }
             
             holder.businessName.setText((position + 1) + ". " + names.get(position));
-            //holder.descr.setText(description[position]);
             return view;
         }
     }
