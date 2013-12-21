@@ -47,13 +47,7 @@ public class LocuAPI extends AsyncTask<Void, Void, LocuResult>{
 		search += lat +","+ lng +"&has_menu=true&api_key=" + api_key;
 		String result = RestClient.connect(search);
 		JsonElement json = new JsonParser().parse(result);
-		//System.out.println(json);
 		LocuResult biz = gson.fromJson(json, LocuResult.class);
-		//System.out.println(biz);
-//		List<Objects> business = biz.getBusiness();
-//		for(Objects b: business) {
-//			System.out.println(b.getName());
-//		}
 		return biz;
 	}
 

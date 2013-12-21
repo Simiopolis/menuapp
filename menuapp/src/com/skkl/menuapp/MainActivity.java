@@ -1,5 +1,7 @@
 package com.skkl.menuapp;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -20,6 +22,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.skkl.menuapp.asynctask.LocuAPI;
+import com.skkl.menuapp.locu.Business;
 import com.skkl.menuapp.locu.LocuResult;
 
 public class MainActivity extends Activity {
@@ -33,17 +36,20 @@ public class MainActivity extends Activity {
 	private LocuAPI locu;
 	private Context context;
 	private LocuResult result;
+	private List<String> names;
 	protected double lat, lng;
 	
 	//Testing purpose
-	String[] biz = new String[]{"Sushi Nichii", "Barchi Sushi", "Latitude"};
-
+	//String[] biz = new String[]{"Sushi Nichii", "Barchi Sushi", "Latitude"};
+	
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.listview);
         
         context = this;
+        names = new ArrayList<String>();
         getLocation();
         listview = (ListView)findViewById(R.id.listview);
         ((ListView)listview).setAdapter(new ItemAdapter());
@@ -64,6 +70,12 @@ public class MainActivity extends Activity {
 		locuSearch();
 	}
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+		names.clear();
+	}
+
 	private void locuSearch() {
     	locu = new LocuAPI(new Callback() {
 			
@@ -75,7 +87,11 @@ public class MainActivity extends Activity {
 			public void onComplete() {
 				try {
 					result = locu.get(1000, TimeUnit.MILLISECONDS);
-					
+					List<Business> businesses = result.getObjects();					
+					for(Business b: businesses) {
+						names.add(b.getName());
+					}
+					listview.invalidateViews();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				} catch (ExecutionException e) {
@@ -83,7 +99,6 @@ public class MainActivity extends Activity {
 				} catch (TimeoutException e) {
 					e.printStackTrace();
 				}
-				
 			}
 		}, context, lat, lng);
     	locu.execute();
@@ -111,7 +126,7 @@ public class MainActivity extends Activity {
 
         @Override
         public int getCount() {
-            return biz.length;
+            return names.size();
         }
 
         @Override
@@ -138,7 +153,7 @@ public class MainActivity extends Activity {
                 holder = (ViewHolder)view.getTag();
             }
             
-            holder.businessName.setText((position + 1) + ". " + biz[position]);
+            holder.businessName.setText((position + 1) + ". " + names.get(position));
             //holder.descr.setText(description[position]);
             return view;
         }
