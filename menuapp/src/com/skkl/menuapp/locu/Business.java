@@ -1,11 +1,45 @@
 package com.skkl.menuapp.locu;
 
+import java.util.List;
+
 public class Business {
 
-	String name, locality, streetAddr, region, lng, phone, postalCode, lat, id
-		, website_url, resource_url;
-	String[] cuisines, categories;
-	boolean has_menu;
+	private String name, locality, street_address, region, lng, phone, postalCode, lat, id
+	, website_url, resource_url,country;
+	private List<String> cuisines,categories;
+	private boolean has_menu;
+	
+	public String getStreet_address() {
+		return street_address;
+	}
+
+	public void setStreet_address(String street_address) {
+		this.street_address = street_address;
+	}
+
+	public List<String> getCuisines() {
+		return cuisines;
+	}
+
+	public void setCuisines(List<String> cuisines) {
+		this.cuisines = cuisines;
+	}
+
+	public List<String> getCategories() {
+		return categories;
+	}
+
+	public void setCategories(List<String> categories) {
+		this.categories = categories;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
 	
 	public String getName(){
 		return name;
@@ -24,11 +58,11 @@ public class Business {
 	}
 
 	public String getStreetAddr() {
-		return streetAddr;
+		return street_address;
 	}
 
 	public void setStreetAddr(String streetAddr) {
-		this.streetAddr = streetAddr;
+		this.street_address = streetAddr;
 	}
 
 	public String getRegion() {
@@ -93,22 +127,6 @@ public class Business {
 
 	public void setResource_url(String resource_url) {
 		this.resource_url = resource_url;
-	}
-
-	public String[] getCuisines() {
-		return cuisines;
-	}
-
-	public void setCuisines(String[] cuisines) {
-		this.cuisines = cuisines;
-	}
-
-	public String[] getCategories() {
-		return categories;
-	}
-
-	public void setCategories(String[] categories) {
-		this.categories = categories;
 	}
 
 	public boolean isHas_menu() {

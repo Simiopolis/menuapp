@@ -1,19 +1,24 @@
 package com.skkl.menuapp.locu;
 
+import java.util.List;
+
 public class LocuResult {
 	
-	Business business;
-	Meta meta;
+	private List<Business> objects;
+	private Meta meta;
 	
-	public Business getBusiness() {
-		return business;
+	public List<Business> getObjects() {
+		return objects;
 	}
-	public void setBusiness(Business business) {
-		this.business = business;
+
+	public void setObjects(List<Business> objects) {
+		this.objects = objects;
 	}
+
 	public Meta getMeta() {
 		return meta;
 	}
+	
 	public void setMeta(Meta meta) {
 		this.meta = meta;
 	}
