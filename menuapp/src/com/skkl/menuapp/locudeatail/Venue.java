@@ -9,7 +9,7 @@ public class Venue {
 	private double lng, lat;
 	private List<String> cuisines, categories;
 	private List<List<String>> open_hours;
-	private Menu menus;
+	private List<Menu> menus;
 	
 	public String getName() {
 		return name;
@@ -119,10 +119,10 @@ public class Venue {
 	public void setOpen_hours(List<List<String>> open_hours) {
 		this.open_hours = open_hours;
 	}
-	public Menu getMenus() {
+	public List<Menu> getMenus() {
 		return menus;
 	}
-	public void setMenus(Menu menus) {
+	public void setMenus(List<Menu> menus) {
 		this.menus = menus;
 	}
 

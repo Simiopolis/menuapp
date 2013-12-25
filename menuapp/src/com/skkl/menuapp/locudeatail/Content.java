@@ -2,7 +2,7 @@ package com.skkl.menuapp.locudeatail;
 
 public class Content {
 
-	private String price, type, name;
+	private String price, type, name, description;
 
 	public String getPrice() {
 		return price;
@@ -26,6 +26,14 @@ public class Content {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 }

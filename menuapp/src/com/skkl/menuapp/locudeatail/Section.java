@@ -4,14 +4,23 @@ import java.util.List;
 
 public class Section {
 	
-	private List<SubSection> subsections;
+	private List<Subsection> subsections;
+	private String section_name;
 
-	public List<SubSection> getSubsections() {
+	public List<Subsection> getSubsections() {
 		return subsections;
 	}
 
-	public void setSubsections(List<SubSection> subsections) {
+	public void setSubsections(List<Subsection> subsections) {
 		this.subsections = subsections;
+	}
+
+	public String getSection_name() {
+		return section_name;
+	}
+
+	public void setSection_name(String section_name) {
+		this.section_name = section_name;
 	}
 	
 }
