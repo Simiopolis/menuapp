@@ -299,7 +299,7 @@ public class MenuActivity extends Activity {
             	if(menuDisplay.getContent().getDescription() != null) {
             		holder.contentDesc.setText(menuDisplay.getContent().getDescription());
             	} else {
-            		holder.contentDesc.setText("");
+            		holder.contentDesc.setVisibility(View.GONE);
             	}
             	
             } else if(menuDisplay.getOptionGroups() != null) {
