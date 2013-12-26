@@ -40,13 +40,8 @@ public class MenuActivity extends Activity {
 	private LocuDetailAPI detail;
 	private List<Venue> venues;
 	private List<Menu> menus;
-	private List<String> item_name;
-	private List<String> item_type;
-	private List<String> item_desc;
-	private List<String> item_price;
-	private List<String> section_name;
-	private List<String> subsection_name;
 	private List<MenuDisplay> menu_display;
+	TextView businessName;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +63,9 @@ public class MenuActivity extends Activity {
 				// TODO: do something when item is clicked.
 			}
 		});
+		businessName = (TextView)findViewById(R.id.busines_name);
+		businessName.setText(name);
+		
 	}
 
 	@Override
@@ -112,42 +110,10 @@ public class MenuActivity extends Activity {
 								for(Content c: contents) {
 									MenuDisplay content = new MenuDisplay();
 									content.setContent(c);
-									menu_display.add(content);
-//									if(c.getName() != null) {
-//										item_name.add(c.getName());
-//									} else {
-//										item_name.add("No Name");
-//									}
-//									 
-//									if(c.getPrice() != null) {
-//										item_price.add(c.getPrice());
-//									} else {
-//										item_price.add("No Price");
-//									}
-//									
-//									if(c.getDescription() != null) {
-//										item_desc.add(c.getDescription());
-//									} else {
-//										item_desc.add("No Description");
-//									}
-//								
-//									if(c.getType() != null) {
-//										item_type.add(c.getType());
-//									} else {
-//										item_type.add("No Type");
-//									}	
+									menu_display.add(content);	
 								}
-//								if(sub.getSubsection_name() != null) {
-//									subsection_name.add(sub.getSubsection_name());
-//								} else {
-//									subsection_name.add("No subsection name");
-//								}
 							}
-//							if(s.getSection_name() != null) {
-//								section_name.add(s.getSection_name());
-//							} else {
-//								section_name.add("No Section Name");
-//							}							
+							
 						}
 					}
 					menuItem.invalidateViews();
@@ -166,6 +132,7 @@ public class MenuActivity extends Activity {
 	public class ItemAdapter extends BaseAdapter {
         
         private class ViewHolder {
+        	public TextView businessName;
             public TextView menuName;
             public TextView sectionName;
             public TextView subsectionName;
@@ -293,7 +260,7 @@ public class MenuActivity extends Activity {
             	} else {
             		holder.contentDesc.setText("");
             	}
-            }                                   
+            }
             return view;
         }
     }
