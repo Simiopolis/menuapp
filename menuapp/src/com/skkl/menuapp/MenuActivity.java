@@ -1,5 +1,6 @@
 package com.skkl.menuapp;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -17,8 +18,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.skkl.menuapp.asynctask.LocuDetailAPI;
+import com.skkl.menuapp.locudeatail.Content;
 import com.skkl.menuapp.locudeatail.LocuDetailResult;
 import com.skkl.menuapp.locudeatail.Menu;
+import com.skkl.menuapp.locudeatail.MenuDisplay;
 import com.skkl.menuapp.locudeatail.Section;
 import com.skkl.menuapp.locudeatail.Subsection;
 import com.skkl.menuapp.locudeatail.Venue;
@@ -37,9 +40,13 @@ public class MenuActivity extends Activity {
 	private LocuDetailAPI detail;
 	private List<Venue> venues;
 	private List<Menu> menus;
-	private List<Section> sections;
-	private List<Subsection> subsections;
-	TextView tv;
+	private List<String> item_name;
+	private List<String> item_type;
+	private List<String> item_desc;
+	private List<String> item_price;
+	private List<String> section_name;
+	private List<String> subsection_name;
+	private List<MenuDisplay> menu_display;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +57,7 @@ public class MenuActivity extends Activity {
 		id = bundle.getString("id");
 		name = bundle.getString("name");
 		context = this;
+		menu_display = new ArrayList<MenuDisplay>();
 		menuItem = (ListView)findViewById(R.id.menu_item_list);
 		((ListView)menuItem).setAdapter(new ItemAdapter());
 		menuItem.setOnItemClickListener(new OnItemClickListener() {
@@ -60,7 +68,6 @@ public class MenuActivity extends Activity {
 				// TODO: do something when item is clicked.
 			}
 		});
-		
 	}
 
 	@Override
@@ -80,7 +87,70 @@ public class MenuActivity extends Activity {
 			public void onComplete() {
 				try {
 					result = detail.get(1000, TimeUnit.MILLISECONDS);
+					//this should be only one
 					venues = (List<Venue>) result.getObjects();
+					Venue venue = venues.get(0);
+					menus = venue.getMenus();
+					// 1 or more menus
+					for(Menu m: menus) {
+						// adds a menu object to menu_display
+						MenuDisplay menu = new MenuDisplay();
+						menu.setMenu(m);
+						menu_display.add(menu);
+						List<Section> sections = m.getSections();
+						for(Section s: sections) {
+							// adding a section instance to menu_display
+							MenuDisplay section = new MenuDisplay();
+							section.setSection(s);
+							menu_display.add(section);
+							List<Subsection> subsections = s.getSubsections();
+							for(Subsection sub: subsections) {
+								MenuDisplay subsection = new MenuDisplay();
+								subsection.setSubsection(sub);
+								menu_display.add(subsection);
+								List<Content> contents = sub.getContents();
+								for(Content c: contents) {
+									MenuDisplay content = new MenuDisplay();
+									content.setContent(c);
+									menu_display.add(content);
+//									if(c.getName() != null) {
+//										item_name.add(c.getName());
+//									} else {
+//										item_name.add("No Name");
+//									}
+//									 
+//									if(c.getPrice() != null) {
+//										item_price.add(c.getPrice());
+//									} else {
+//										item_price.add("No Price");
+//									}
+//									
+//									if(c.getDescription() != null) {
+//										item_desc.add(c.getDescription());
+//									} else {
+//										item_desc.add("No Description");
+//									}
+//								
+//									if(c.getType() != null) {
+//										item_type.add(c.getType());
+//									} else {
+//										item_type.add("No Type");
+//									}	
+								}
+//								if(sub.getSubsection_name() != null) {
+//									subsection_name.add(sub.getSubsection_name());
+//								} else {
+//									subsection_name.add("No subsection name");
+//								}
+							}
+//							if(s.getSection_name() != null) {
+//								section_name.add(s.getSection_name());
+//							} else {
+//								section_name.add("No Section Name");
+//							}							
+						}
+					}
+					menuItem.invalidateViews();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				} catch (ExecutionException e) {
@@ -88,7 +158,6 @@ public class MenuActivity extends Activity {
 				} catch (TimeoutException e) {
 					e.printStackTrace();
 				}
-				
 			}
 		}, id, context);
 		detail.execute();
@@ -97,40 +166,134 @@ public class MenuActivity extends Activity {
 	public class ItemAdapter extends BaseAdapter {
         
         private class ViewHolder {
-            public TextView businessName;
+            public TextView menuName;
+            public TextView sectionName;
+            public TextView subsectionName;
+            public TextView contentName;
+            public TextView contentPrice;
+            public TextView contentDesc;
         }
 
         @Override
         public int getCount() {
-        	// this number should sum up menu name and its items
-            //return names.size();
-        	return 0;
+        	return menu_display.size();
         }
 
         @Override
         public Object getItem(int position) {
-            return null;
+            return menu_display.get(position);
         }
 
         @Override
         public long getItemId(int position) {
             return position;
         }
-
+        
         @Override
+		public int getViewTypeCount() {
+			return 4;
+		}
+        
+		@Override
+		public int getItemViewType(int position) {
+//			Menu menu = menu_display.get(position).getMenu();
+//			if(menu instanceof Menu) {
+//				
+//			}
+			
+			if(menu_display.get(position).getMenu() != null) {
+				return 0;
+			} else if(menu_display.get(position).getSection() != null) {
+				return 1;
+			} else if(menu_display.get(position).getSubsection() != null) {
+				return 2;
+			} else {
+				return 3;
+			}
+			
+		}
+
+		@Override
         public View getView(int position, View convertView, ViewGroup parent) {
             View view = convertView;
             final ViewHolder holder;
-            if(convertView == null) {
-                view = getLayoutInflater().inflate(R.layout.business, parent, false);
-                holder = new ViewHolder();
-                holder.businessName = (TextView)view.findViewById(R.id.businessName);
-                view.setTag(holder);
-            } else {
-                holder = (ViewHolder)view.getTag();
-            }
             
-            //holder.businessName.setText((position + 1) + ". " + names.get(position));
+            //get menu display instance
+            MenuDisplay menuDisplay = menu_display.get(position);
+            
+            if(menuDisplay.getMenu() != null) {	
+            	if(convertView == null) {
+            		view = getLayoutInflater().inflate(R.layout.menu, parent, false);
+            		holder = new ViewHolder();
+            		holder.menuName  = (TextView)view.findViewById(R.id.menuName);
+            		view.setTag(holder);
+            	} else {
+            		holder = (ViewHolder)view.getTag();
+            	}
+            	if(menuDisplay.getMenu().getMenu_name() != null) {
+            		holder.menuName.setText(menuDisplay.getMenu().getMenu_name());
+            	} else {
+            		holder.menuName.setText("");
+            	}
+            	
+            } else if(menuDisplay.getSection() != null) {
+            	if(convertView == null) {
+            		view = getLayoutInflater().inflate(R.layout.section, parent, false);
+            		holder = new ViewHolder();
+            		holder.sectionName = (TextView)view.findViewById(R.id.section_name);
+            		view.setTag(holder);
+            	} else {
+            		holder = (ViewHolder)view.getTag();
+            	}
+            	if(menuDisplay.getSection().getSection_name() != null) {
+            		holder.sectionName.setText(menuDisplay.getSection().getSection_name());
+            	} else {
+            		holder.sectionName.setText("");
+            	}
+            	
+            } else if(menuDisplay.getSubsection() != null) {
+            	if(convertView == null) {
+            		view = getLayoutInflater().inflate(R.layout.subsection, parent, false);
+            		holder = new ViewHolder();
+            		holder.sectionName = (TextView)view.findViewById(R.id.subsectionName);
+            		view.setTag(holder);
+            	} else {
+            		holder = (ViewHolder)view.getTag();
+            	}
+            	if(menuDisplay.getSubsection().getSubsection_name() != null) {
+            		holder.subsectionName.setText(menuDisplay.getSubsection().getSubsection_name());
+            	} else {
+//            		holder.subsectionName.setText("No Subsection Name");
+            	}            	
+            } else {
+            	if(convertView == null) {
+            		view = getLayoutInflater().inflate(R.layout.content, parent, false);
+            		holder = new ViewHolder();
+            		holder.contentName = (TextView)view.findViewById(R.id.content_name);
+            		holder.contentPrice = (TextView)view.findViewById(R.id.content_price);
+            		holder.contentDesc = (TextView)view.findViewById(R.id.content_desc);
+            		view.setTag(holder);
+            	} else {
+            		holder = (ViewHolder)view.getTag();
+            	}
+            	if(menuDisplay.getContent().getName() != null) {
+            		holder.contentName.setText(menuDisplay.getContent().getName());
+            	} else {
+            		holder.contentName.setText("");
+            	}
+            	
+            	if(menuDisplay.getContent().getPrice() != null) {
+            		holder.contentPrice.setText(menuDisplay.getContent().getPrice());            
+            	} else {
+            		holder.contentPrice.setText("");
+            	}
+            	
+            	if(menuDisplay.getContent().getDescription() != null) {
+            		holder.contentDesc.setText(menuDisplay.getContent().getDescription());
+            	} else {
+            		holder.contentDesc.setText("");
+            	}
+            }                                   
             return view;
         }
     }

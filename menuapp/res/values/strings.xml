@@ -8,5 +8,8 @@
     <string name="itemName">Item Name</string>
     <string name="itemDescription">Some Item description and info about item. blah blah blah blah blah blah</string>
     <string name="itemPrice">$99.99</string>
+    <string name="sectionName">Some Section Name</string>
+    <string name="subsectionName">Some Subsection Name</string>
+    <string name="menuName">Some Menu Name</string>
 
 </resources>

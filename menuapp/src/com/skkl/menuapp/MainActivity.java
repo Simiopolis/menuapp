@@ -159,7 +159,6 @@ public class MainActivity extends Activity {
             } else {
                 holder = (ViewHolder)view.getTag();
             }
-            
             holder.businessName.setText((position + 1) + ". " + names.get(position));
             return view;
         }
