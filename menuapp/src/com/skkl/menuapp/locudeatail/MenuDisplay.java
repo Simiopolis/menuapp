@@ -6,6 +6,8 @@ public class MenuDisplay {
 	private Menu menu;
 	private Section section;
 	private Subsection subsection;
+	private OptionGroups optionGroups;
+	private Option option;
 	
 	public Content getContent() {
 		return content;
@@ -37,6 +39,22 @@ public class MenuDisplay {
 	
 	public void setSubsection(Subsection subsection) {
 		this.subsection = subsection;
+	}
+
+	public OptionGroups getOptionGroups() {
+		return optionGroups;
+	}
+
+	public void setOptionGroups(OptionGroups optionGroups) {
+		this.optionGroups = optionGroups;
+	}
+
+	public Option getOption() {
+		return option;
+	}
+
+	public void setOption(Option option) {
+		this.option = option;
 	}
 	
 }

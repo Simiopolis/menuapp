@@ -17,6 +17,8 @@ import com.skkl.menuapp.MenuActivity.Callback;
 import com.skkl.menuapp.locudeatail.Content;
 import com.skkl.menuapp.locudeatail.LocuDetailResult;
 import com.skkl.menuapp.locudeatail.Menu;
+import com.skkl.menuapp.locudeatail.Option;
+import com.skkl.menuapp.locudeatail.OptionGroups;
 import com.skkl.menuapp.locudeatail.Section;
 import com.skkl.menuapp.locudeatail.Subsection;
 import com.skkl.menuapp.locudeatail.Venue;
@@ -190,7 +192,20 @@ public class LocuDetailAPI extends AsyncTask<Void, Void, LocuDetailResult> {
 	
 	private Content makeContent(JSONObject json) {
 		Content content = new Content();
+		
 		try {
+			if(json.has("option_groups")) {
+				JSONArray jArray = json.getJSONArray("option_groups");
+				int numOfOptionGroups = jArray.length();
+				List<OptionGroups> optionGroups = new ArrayList<OptionGroups>();
+				for(int i=0; i< numOfOptionGroups; i++) {
+					JSONObject j = (JSONObject)jArray.get(i);
+					OptionGroups oGroups = makeOptionGroups(j);
+					optionGroups.add(oGroups);
+				}
+				content.setOptionGroups(optionGroups);
+			}
+			
 			if(json.has("price")) {
 				String price = json.getString("price");
 				content.setPrice(price);
@@ -219,6 +234,51 @@ public class LocuDetailAPI extends AsyncTask<Void, Void, LocuDetailResult> {
 			e.printStackTrace();
 		}
 		return content;
+	}
+	
+	private OptionGroups makeOptionGroups(JSONObject json) {
+		OptionGroups optionGroup = new OptionGroups();
+		try {
+			JSONArray jArray = json.getJSONArray("options");
+			int numOfOptions = jArray.length();
+			List<Option> options = new ArrayList<Option>();
+			for(int i=0; i< numOfOptions; i++) {
+				JSONObject j = (JSONObject)jArray.get(i);
+				Option option = makeOption(j);
+				options.add(option);
+			}
+			optionGroup.setOptions(options);
+			
+			if(json.has("text") && json.getString("text") != "") {
+				optionGroup.setText(json.getString("text"));
+			}
+			
+			if(json.has("type")) {
+				optionGroup.setType(json.getString("type"));
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return optionGroup;
+	}
+	
+	private Option makeOption(JSONObject json) {
+		Option option = new Option();
+		
+		try {
+			if(json.has("name")) {
+				option.setName(json.getString("name"));
+			}
+			
+			if(json.has("price")) {
+				option.setPrice(json.getString("price"));
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return option;
 	}
 	
 }

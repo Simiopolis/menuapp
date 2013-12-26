@@ -35,7 +35,12 @@
         android:id="@+id/content_text"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
+<<<<<<< HEAD
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
+=======
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"/>
+>>>>>>> work
 
 </RelativeLayout>
