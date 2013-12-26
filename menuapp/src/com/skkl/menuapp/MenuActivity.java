@@ -22,6 +22,8 @@ import com.skkl.menuapp.locudeatail.Content;
 import com.skkl.menuapp.locudeatail.LocuDetailResult;
 import com.skkl.menuapp.locudeatail.Menu;
 import com.skkl.menuapp.locudeatail.MenuDisplay;
+import com.skkl.menuapp.locudeatail.Option;
+import com.skkl.menuapp.locudeatail.OptionGroups;
 import com.skkl.menuapp.locudeatail.Section;
 import com.skkl.menuapp.locudeatail.Subsection;
 import com.skkl.menuapp.locudeatail.Venue;
@@ -111,9 +113,22 @@ public class MenuActivity extends Activity {
 									MenuDisplay content = new MenuDisplay();
 									content.setContent(c);
 									menu_display.add(content);	
+									if(c.getOptionGroups() != null) {
+										List<OptionGroups> optionGroups = c.getOptionGroups();
+										for(OptionGroups og: optionGroups) {
+											MenuDisplay optiongroup = new MenuDisplay();
+											optiongroup.setOptionGroups(og);
+											menu_display.add(optiongroup);
+											List<Option> options = og.getOptions();
+											for(Option o: options) {
+												MenuDisplay option = new MenuDisplay();
+												option.setOption(o);
+												menu_display.add(option);
+											}
+										}
+									}
 								}
-							}
-							
+							}							
 						}
 					}
 					menuItem.invalidateViews();
@@ -132,13 +147,16 @@ public class MenuActivity extends Activity {
 	public class ItemAdapter extends BaseAdapter {
         
         private class ViewHolder {
-        	public TextView businessName;
             public TextView menuName;
             public TextView sectionName;
             public TextView subsectionName;
             public TextView contentName;
             public TextView contentPrice;
             public TextView contentDesc;
+            public TextView contentText;
+            public TextView optionGroup_type;
+            public TextView optionName;
+            public TextView optionPrice;
         }
 
         @Override
@@ -158,7 +176,7 @@ public class MenuActivity extends Activity {
         
         @Override
 		public int getViewTypeCount() {
-			return 4;
+			return 6;
 		}
         
 		@Override
@@ -174,8 +192,12 @@ public class MenuActivity extends Activity {
 				return 1;
 			} else if(menu_display.get(position).getSubsection() != null) {
 				return 2;
-			} else {
+			} else if(menu_display.get(position).getContent() != null){
 				return 3;
+			} else if(menu_display.get(position).getOptionGroups() != null){
+				return 4;
+			} else {
+				return 5;
 			}
 			
 		}
@@ -218,7 +240,7 @@ public class MenuActivity extends Activity {
             		holder.sectionName.setText("");
             	}
             	
-            } else if(menuDisplay.getSubsection() != null) {
+            } else if(menuDisplay.getSubsection() != null && menuDisplay.getSubsection().getSubsection_name() != null) {
             	if(convertView == null) {
             		view = getLayoutInflater().inflate(R.layout.subsection, parent, false);
             		holder = new ViewHolder();
@@ -227,22 +249,33 @@ public class MenuActivity extends Activity {
             	} else {
             		holder = (ViewHolder)view.getTag();
             	}
+            	
+            	//TODO: if statement might not be needed
             	if(menuDisplay.getSubsection().getSubsection_name() != null) {
             		holder.subsectionName.setText(menuDisplay.getSubsection().getSubsection_name());
             	} else {
 //            		holder.subsectionName.setText("No Subsection Name");
             	}            	
-            } else {
+            } else if(menuDisplay.getContent() != null){
+            	//content displaying view
             	if(convertView == null) {
-            		view = getLayoutInflater().inflate(R.layout.content, parent, false);
+            		view = getLayoutInflater().inflate(R.layout.option_groups, parent, false);
             		holder = new ViewHolder();
             		holder.contentName = (TextView)view.findViewById(R.id.content_name);
             		holder.contentPrice = (TextView)view.findViewById(R.id.content_price);
             		holder.contentDesc = (TextView)view.findViewById(R.id.content_desc);
+            		holder.contentText = (TextView)view.findViewById(R.id.content_text);
             		view.setTag(holder);
             	} else {
             		holder = (ViewHolder)view.getTag();
             	}
+            	
+            	if(menuDisplay.getContent().getText() != null) {
+            		holder.contentText.setText(menuDisplay.getContent().getText());
+            	} else {
+            		holder.contentText.setText("");
+            	}
+            	
             	if(menuDisplay.getContent().getName() != null) {
             		holder.contentName.setText(menuDisplay.getContent().getName());
             	} else {
@@ -259,6 +292,44 @@ public class MenuActivity extends Activity {
             		holder.contentDesc.setText(menuDisplay.getContent().getDescription());
             	} else {
             		holder.contentDesc.setText("");
+            	}
+            } else if(menuDisplay.getOptionGroups() != null) {
+            	if(convertView == null) {
+            		view = getLayoutInflater().inflate(R.layout.option_groups, parent, false);
+            		holder = new ViewHolder();
+            		holder.optionGroup_type = (TextView)view.findViewById(R.id.optionGroup_type);
+            		view.setTag(holder);
+            	} else {
+            		holder = (ViewHolder)view.getTag();
+            	}
+            	
+            	if(menuDisplay.getOptionGroups().getType() != null) {
+            		holder.optionGroup_type.setText(menuDisplay.getOptionGroups().getType());
+            	} else {
+            		holder.optionGroup_type.setText("");
+            	}
+            } 
+            	else if (menuDisplay.getOption() != null){
+            	if(convertView == null) {
+            		view = getLayoutInflater().inflate(R.layout.option, parent, false);
+            		holder = new ViewHolder();
+            		holder.optionName = (TextView)view.findViewById(R.id.option_name);
+            		holder.optionPrice = (TextView)view.findViewById(R.id.option_price);
+            		view.setTag(holder);
+            	} else {
+            		holder = (ViewHolder)view.getTag();
+            	}
+            	
+            	if(menuDisplay.getOption().getName() != null) {
+            		holder.optionName.setText(menuDisplay.getOption().getName());
+            	} else {
+            		holder.optionName.setText("");
+            	}
+            	
+            	if(menuDisplay.getOption().getPrice() != null) {
+            		holder.optionPrice.setText(dollarSign + menuDisplay.getOption().getPrice());
+            	} else {
+            		holder.optionPrice.setText("");
             	}
             }
             return view;

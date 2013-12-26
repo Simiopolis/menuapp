@@ -1,8 +1,11 @@
 package com.skkl.menuapp.locudeatail;
 
+import java.util.List;
+
 public class Content {
 
-	private String price, type, name, description;
+	private String price, type, name, description, text;
+	private List<OptionGroups> optionGroups;
 
 	public String getPrice() {
 		return price;
@@ -34,6 +37,22 @@ public class Content {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
+	}
+
+	public List<OptionGroups> getOptionGroups() {
+		return optionGroups;
+	}
+
+	public void setOptionGroups(List<OptionGroups> optionGroups) {
+		this.optionGroups = optionGroups;
 	}
 	
 }

@@ -29,6 +29,13 @@
         android:layout_height="wrap_content"
         android:layout_width="wrap_content" 
         android:paddingLeft="10dp"
-        android:text="@string/itemDescription"/>    
+        android:text="@string/itemDescription"/>
+    
+    <TextView 
+        android:id="@+id/content_text"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"/>
 
 </RelativeLayout>
