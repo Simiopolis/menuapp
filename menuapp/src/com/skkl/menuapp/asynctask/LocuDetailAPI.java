@@ -211,6 +211,10 @@ public class LocuDetailAPI extends AsyncTask<Void, Void, LocuDetailResult> {
 				content.setName(name);
 			}
 			
+			if(json.has("text")) {
+				content.setText(json.getString("text"));
+			}
+			
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

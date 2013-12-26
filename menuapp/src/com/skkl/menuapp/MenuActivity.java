@@ -112,8 +112,7 @@ public class MenuActivity extends Activity {
 									content.setContent(c);
 									menu_display.add(content);	
 								}
-							}
-							
+							}							
 						}
 					}
 					menuItem.invalidateViews();
@@ -132,13 +131,13 @@ public class MenuActivity extends Activity {
 	public class ItemAdapter extends BaseAdapter {
         
         private class ViewHolder {
-        	public TextView businessName;
             public TextView menuName;
             public TextView sectionName;
             public TextView subsectionName;
             public TextView contentName;
             public TextView contentPrice;
             public TextView contentDesc;
+            public TextView contentText;
         }
 
         @Override
@@ -185,6 +184,7 @@ public class MenuActivity extends Activity {
             View view = convertView;
             final ViewHolder holder;
             String dollarSign = "$";
+            
             //get menu display instance
             MenuDisplay menuDisplay = menu_display.get(position);
             
@@ -239,10 +239,18 @@ public class MenuActivity extends Activity {
             		holder.contentName = (TextView)view.findViewById(R.id.content_name);
             		holder.contentPrice = (TextView)view.findViewById(R.id.content_price);
             		holder.contentDesc = (TextView)view.findViewById(R.id.content_desc);
+            		holder.contentText = (TextView)view.findViewById(R.id.content_text);
             		view.setTag(holder);
             	} else {
             		holder = (ViewHolder)view.getTag();
             	}
+            	
+            	if(menuDisplay.getContent().getText() != null) {
+            		holder.contentText.setText(menuDisplay.getContent().getText());
+            	} else {
+            		holder.contentText.setText("");
+            	}
+            	
             	if(menuDisplay.getContent().getName() != null) {
             		holder.contentName.setText(menuDisplay.getContent().getName());
             	} else {
