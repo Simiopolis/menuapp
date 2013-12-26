@@ -228,7 +228,7 @@ public class MenuActivity extends Activity {
             	if(convertView == null) {
             		view = getLayoutInflater().inflate(R.layout.subsection, parent, false);
             		holder = new ViewHolder();
-            		holder.sectionName = (TextView)view.findViewById(R.id.subsectionName);
+            		holder.subsectionName = (TextView)view.findViewById(R.id.subsectionName);
             		view.setTag(holder);
             	} else {
             		holder = (ViewHolder)view.getTag();
@@ -238,7 +238,7 @@ public class MenuActivity extends Activity {
             	} else {
 //            		holder.subsectionName.setText("No Subsection Name");
             	}            	
-            } else {
+            } else  if(menuDisplay.getContent() != null){
             	if(convertView == null) {
             		view = getLayoutInflater().inflate(R.layout.content, parent, false);
             		holder = new ViewHolder();

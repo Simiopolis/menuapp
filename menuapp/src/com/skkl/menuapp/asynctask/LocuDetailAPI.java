@@ -176,8 +176,8 @@ public class LocuDetailAPI extends AsyncTask<Void, Void, LocuDetailResult> {
 				Content content = makeContent(j);
 				contents.add(content);
 			}
-			if(json.has("section_name")) {
-				String subsection_name = json.getString("section_name");
+			if(json.has("subsection_name")) {
+				String subsection_name = json.getString("subsection_name");
 				subsection.setSubsection_name(subsection_name);
 			}
 			subsection.setContents(contents);
