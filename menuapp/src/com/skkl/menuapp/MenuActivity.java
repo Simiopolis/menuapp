@@ -240,7 +240,7 @@ public class MenuActivity extends Activity {
             		holder.sectionName.setText("");
             	}
             	
-            } else if(menuDisplay.getSubsection() != null && menuDisplay.getSubsection().getSubsection_name() != null) {
+            } else if(menuDisplay.getSubsection() != null) {
             	if(convertView == null) {
             		view = getLayoutInflater().inflate(R.layout.subsection, parent, false);
             		holder = new ViewHolder();
@@ -259,7 +259,7 @@ public class MenuActivity extends Activity {
             } else if(menuDisplay.getContent() != null){
             	//content displaying view
             	if(convertView == null) {
-            		view = getLayoutInflater().inflate(R.layout.option_groups, parent, false);
+            		view = getLayoutInflater().inflate(R.layout.content, parent, false);
             		holder = new ViewHolder();
             		holder.contentName = (TextView)view.findViewById(R.id.content_name);
             		holder.contentPrice = (TextView)view.findViewById(R.id.content_price);
@@ -293,6 +293,7 @@ public class MenuActivity extends Activity {
             	} else {
             		holder.contentDesc.setText("");
             	}
+            	
             } else if(menuDisplay.getOptionGroups() != null) {
             	if(convertView == null) {
             		view = getLayoutInflater().inflate(R.layout.option_groups, parent, false);
