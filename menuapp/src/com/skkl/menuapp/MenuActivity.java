@@ -184,7 +184,7 @@ public class MenuActivity extends Activity {
         public View getView(int position, View convertView, ViewGroup parent) {
             View view = convertView;
             final ViewHolder holder;
-            
+            String dollarSign = "$";
             //get menu display instance
             MenuDisplay menuDisplay = menu_display.get(position);
             
@@ -250,7 +250,7 @@ public class MenuActivity extends Activity {
             	}
             	
             	if(menuDisplay.getContent().getPrice() != null) {
-            		holder.contentPrice.setText(menuDisplay.getContent().getPrice());            
+            		holder.contentPrice.setText(dollarSign + menuDisplay.getContent().getPrice());            
             	} else {
             		holder.contentPrice.setText("");
             	}
