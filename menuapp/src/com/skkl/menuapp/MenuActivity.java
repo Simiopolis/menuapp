@@ -74,6 +74,12 @@ public class MenuActivity extends Activity {
 		LocuDetailSearch();
 	}
 	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		menu_display.clear();
+	}
+
 	private void LocuDetailSearch() {
 		detail = new LocuDetailAPI(new Callback() {
 			
